@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     // id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
@@ -9,6 +10,8 @@ description = 'Advanced GUI library for Minecraft plugins'
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -59,4 +62,52 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
+}
+
+// GitHub Packages publishing configuration
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'lingui'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'LinGUi'
+                description = 'Advanced GUI library for Minecraft plugins'
+                url = 'https://github.com/c0rex86/LinGUi'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'c0rex86'
+                        name = 'c0re'
+                        email = 'c0rex86@gmail.com'
+                        url = 'https://c0rex86.ru'
+                    }
+                }
+            }
+        }
+    }
+    
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/c0rex86/LinGUi")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
 } 
