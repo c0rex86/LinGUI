@@ -1,0 +1,19 @@
+# LinGUi Command Bindings Configuration
+# Format: <command>: <gui_id>
+
+# Whether to create default bindings on first load
+default_bindings: true
+
+# Command bindings
+bindings:
+  # Admin menu access
+  admin: admin_menu
+  
+  # Advanced menu access
+  menu: advanced_menu
+  
+  # Shop access
+  shop: shop_gui
+  
+  # Game access
+  game: game_gui 

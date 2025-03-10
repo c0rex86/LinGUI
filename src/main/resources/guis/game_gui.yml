@@ -1,0 +1,154 @@
+title: "Number Guessing Game"
+rows: 5
+items:
+  # Game Info
+  4:
+    material: BOOK
+    name: "&6Number Guessing Game"
+    lore:
+      - "&7Guess a number between"
+      - "&71 and 100"
+      - ""
+      - "&7Attempts: &e{attempts}&7/&e{max_attempts}"
+    script: |
+      # Initialize game if not started
+      if {game_started} != true
+        include: game
+      endif
+  
+  # Number Input (1-10)
+  10:
+    material: PAPER
+    name: "&a1-10"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 1 and 10"
+    script: |
+      random input_number 1 10
+      set action guess
+      include: game
+  
+  11:
+    material: PAPER
+    name: "&a11-20"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 11 and 20"
+    script: |
+      random input_number 11 20
+      set action guess
+      include: game
+  
+  12:
+    material: PAPER
+    name: "&a21-30"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 21 and 30"
+    script: |
+      random input_number 21 30
+      set action guess
+      include: game
+  
+  13:
+    material: PAPER
+    name: "&a31-40"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 31 and 40"
+    script: |
+      random input_number 31 40
+      set action guess
+      include: game
+  
+  14:
+    material: PAPER
+    name: "&a41-50"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 41 and 50"
+    script: |
+      random input_number 41 50
+      set action guess
+      include: game
+  
+  15:
+    material: PAPER
+    name: "&a51-60"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 51 and 60"
+    script: |
+      random input_number 51 60
+      set action guess
+      include: game
+  
+  16:
+    material: PAPER
+    name: "&a61-70"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 61 and 70"
+    script: |
+      random input_number 61 70
+      set action guess
+      include: game
+  
+  19:
+    material: PAPER
+    name: "&a71-80"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 71 and 80"
+    script: |
+      random input_number 71 80
+      set action guess
+      include: game
+  
+  20:
+    material: PAPER
+    name: "&a81-90"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 81 and 90"
+    script: |
+      random input_number 81 90
+      set action guess
+      include: game
+  
+  21:
+    material: PAPER
+    name: "&a91-100"
+    lore:
+      - "&7Click to guess a number"
+      - "&7between 91 and 100"
+    script: |
+      random input_number 91 100
+      set action guess
+      include: game
+  
+  # Lucky Guess
+  31:
+    material: NETHER_STAR
+    name: "&e&lLucky Guess"
+    lore:
+      - "&7Take a random guess between"
+      - "&71 and 100"
+      - ""
+      - "&c50% chance of failure"
+    script: |
+      random input_number 1 100
+      set action guess
+      include: game
+  
+  # Quit Button
+  40:
+    material: BARRIER
+    name: "&cQuit Game"
+    lore:
+      - "&7Click to quit the game"
+      - "&7and return to the main menu"
+    script: |
+      set action quit
+      include: game
+      open: advanced_menu 

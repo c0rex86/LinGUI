@@ -1,0 +1,72 @@
+# LinGUi Minigame Script
+# This script demonstrates a simple number guessing game
+# Author: c0re
+
+# Initialize game if needed
+if {game_started} != true
+  # Generate a random number between 1 and 100
+  random secret_number 1 100
+  
+  # Set initial values
+  set attempts 0
+  set max_attempts 5
+  set game_started true
+  
+  # Welcome message
+  msg: &6Welcome to the Number Guessing Game!
+  msg: &eI'm thinking of a number between &61 &eand &6100
+  msg: &eYou have &6{max_attempts} &eattempts to guess it.
+endif
+
+# Process player guess
+if {action} == guess
+  # Increment attempt counter
+  math attempts + 1
+  
+  # Set the guess from input
+  set guess {input_number}
+  
+  # Check if the guess is correct
+  if {guess} == {secret_number}
+    # Player won!
+    msg: &a&lCONGRATULATIONS! &eYou guessed the correct number: &6{secret_number}
+    msg: &eIt took you &6{attempts} &eattempts.
+    
+    # Give reward
+    console: give {player} gold_ingot {attempts}
+    
+    # Reset game
+    set game_started false
+  else
+    # Check if guess is too high or too low
+    if {guess} > {secret_number}
+      msg: &eToo high! Try a lower number.
+    else
+      msg: &eToo low! Try a higher number.
+    endif
+    
+    # Check if player has attempts left
+    set attempts_left {max_attempts}
+    math attempts_left - {attempts}
+    
+    if {attempts_left} <= 0
+      msg: &c&lGAME OVER! &eYou've used all your attempts.
+      msg: &eThe number was: &6{secret_number}
+      
+      # Reset game
+      set game_started false
+    else
+      msg: &eYou have &6{attempts_left} &eattempts left.
+    endif
+  endif
+  
+  # Reset action
+  set action none
+endif
+
+# Quit game if requested
+if {action} == quit
+  msg: &eYou've quit the game. The number was: &6{secret_number}
+  set game_started false
+  set action none
+endif 

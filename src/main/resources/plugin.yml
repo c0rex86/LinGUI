@@ -1,0 +1,30 @@
+name: LinGUi
+version: ${version}
+main: ru.c0rex86.lingui.LinGUi
+description: ${description}
+api-version: ${apiVersion}
+author: c0re
+website: https://c0rex86.ru
+github: https://github.com/c0rex86/
+commands:
+  lingui:
+    description: Main command for LinGUi plugin
+    usage: /lingui <reload|help|info>
+    aliases: [lgui, lg]
+  opengui:
+    description: Open a specific GUI
+    usage: /opengui <gui_name> [player]
+    aliases: [gui, g]
+permissions:
+  lingui.admin:
+    description: Access to all LinGUi features
+    default: op
+  lingui.use:
+    description: Permission to use basic GUI features
+    default: true
+  lingui.create:
+    description: Permission to create and modify GUIs
+    default: op
+  lingui.command:
+    description: Permission to use command bindings
+    default: op 

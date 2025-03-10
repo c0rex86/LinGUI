@@ -1,0 +1,63 @@
+# LinGUi Shop Script
+# This script demonstrates a simple shop system with variables and math
+# Author: c0re
+
+# Initialize variables if not set
+if {balance} == null
+  set balance 100
+endif
+
+# Welcome message
+msg: &6Welcome to the Shop, &e{player}!
+msg: &aYour balance: &e${balance}
+
+# Process purchase if requested
+if {action} == buy
+  # Get the item and price from metadata
+  set item {item_name}
+  set price {item_price}
+  
+  # Check if player has enough money
+  if {balance} >= {price}
+    # Subtract price from balance
+    math balance - {price}
+    
+    # Execute purchase command
+    console: give {player} {item} 1
+    
+    # Send confirmation message
+    msg: &aYou purchased &e{item} &afor &e${price}&a!
+    msg: &aNew balance: &e${balance}
+  else
+    # Not enough money
+    msg: &cYou don't have enough money to buy &e{item}&c!
+    msg: &cRequired: &e${price} &c| Your balance: &e${balance}
+  endif
+  
+  # Reset action
+  set action none
+endif
+
+# Process selling if requested
+if {action} == sell
+  # Get the item and price from metadata
+  set item {item_name}
+  set price {item_price}
+  
+  # Calculate sell price (half of buy price)
+  math price * 0.5
+  
+  # Add to balance
+  math balance + {price}
+  
+  # Send confirmation message
+  msg: &aYou sold &e{item} &afor &e${price}&a!
+  msg: &aNew balance: &e${balance}
+  
+  # Reset action
+  set action none
+endif
+
+# Generate a random discount
+random discount_percent 5 30
+msg: &eCurrent discount: &a{discount_percent}% &eoff selected items! 

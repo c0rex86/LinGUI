@@ -1,0 +1,227 @@
+# LinGUi RPG Dialog System
+# Система диалогов с NPC для ролевых игр в стиле RPG
+# Author: c0re
+
+# Инициализация переменных диалога
+set npc_name "Мастер Кузнец"
+set dialog_step 0
+set player_response none
+set quest_accepted false
+set has_quest_item false
+
+# Проверяем, есть ли у игрока предмет для квеста
+function check_quest_item
+  # В реальном сценарии здесь бы проверялся инвентарь игрока
+  # Для демонстрации мы просто используем вероятность
+  random chance 1 10
+  if {chance} > 7
+    set has_quest_item true
+  else
+    set has_quest_item false
+  endif
+endfunction
+
+# Функция для показа текста диалога
+function show_dialog
+  # Показываем текст диалога в зависимости от текущего шага
+  if {dialog_step} == 0
+    # Приветствие
+    title: &6{npc_name}
+    subtitle: &7Мастер оружейного дела
+    sound: ENTITY_VILLAGER_AMBIENT 1.0 1.0
+    msg: &6{npc_name}: &fПриветствую тебя, странник! Чем могу быть полезен?
+    delay: 1500
+    
+    # Варианты ответов
+    msg: &a1. Мне нужно оружие.
+    msg: &a2. Расскажи о своей кузнице.
+    msg: &a3. У меня есть дело к тебе.
+    msg: &a4. До свидания.
+    
+    # В реальном сценарии игрок бы выбирал ответ
+    # Для демонстрации мы используем случайный выбор
+    random player_choice 1 4
+    set player_response {player_choice}
+    
+    # Увеличиваем шаг диалога
+    math dialog_step + 1
+    
+    # Небольшая задержка для естественности
+    delay: 2000
+    
+    # Показываем ответ игрока
+    msg: &e{player}: &f{player_response}. ...
+    
+    # Вызываем функцию диалога снова для продолжения
+    call show_dialog
+  
+  elif {dialog_step} == 1
+    # Ответ NPC зависит от выбора игрока
+    if {player_response} == 1
+      # Игрок выбрал оружие
+      msg: &6{npc_name}: &fКонечно! У меня есть отличные мечи, топоры и луки. Что тебя интересует?
+      particle: VILLAGER_HAPPY 5 0.3 0.5 0.3
+      sound: BLOCK_ANVIL_USE 0.5 1.2
+      
+      # Предлагаем варианты
+      msg: &a1. Покажи мечи.
+      msg: &a2. Мне нужен лук.
+      msg: &a3. Я передумал.
+      
+      random player_choice 1 3
+      set player_response {player_choice}
+      delay: 2000
+      
+      # Показываем ответ игрока
+      msg: &e{player}: &f{player_response}. ...
+      
+      # Завершаем диалог для примера
+      math dialog_step + 1
+      call show_dialog
+    
+    elif {player_response} == 2
+      # Игрок спросил о кузнице
+      msg: &6{npc_name}: &fМоя кузница существует уже более 30 лет! Я делаю лучшее оружие во всем королевстве.
+      msg: &6{npc_name}: &fДаже король заказывает у меня мечи для своей стражи!
+      
+      # Эффекты гордости
+      sound: ENTITY_VILLAGER_YES 1.0 1.0
+      particle: FLAME 10 0.3 0.5 0.3
+      
+      # Переходим к шагу информации о квесте
+      math dialog_step + 2
+      delay: 2500
+      call show_dialog
+    
+    elif {player_response} == 3
+      # Игрок говорит о деле
+      msg: &6{npc_name}: &fОх? Какое дело привело тебя ко мне, странник?
+      
+      # Проверяем, есть ли у игрока предмет для квеста
+      call check_quest_item
+      
+      # Переходим к квестовому диалогу
+      math dialog_step + 3
+      delay: 1500
+      call show_dialog
+    
+    else
+      # Игрок прощается
+      msg: &6{npc_name}: &fДо скорой встречи, странник! Заходи еще!
+      sound: ENTITY_VILLAGER_YES 1.0 0.8
+      
+      # Завершаем диалог
+      actionbar: &7Диалог завершен
+    endif
+    
+  elif {dialog_step} == 2
+    # Диалог о оружии
+    if {player_response} == 1 or {player_response} == 2
+      # Выбрал конкретное оружие
+      msg: &6{npc_name}: &fОтличный выбор! Для тебя особая цена - всего 50 золотых!
+      
+      # Спрашиваем о покупке
+      msg: &a1. Купить
+      msg: &a2. Слишком дорого
+      
+      random player_choice 1 2
+      set player_response {player_choice}
+      delay: 2000
+      
+      # Показываем ответ игрока
+      msg: &e{player}: &f{player_response}. ...
+      
+      if {player_response} == 1
+        msg: &6{npc_name}: &fОтлично! Вот твое оружие, пользуйся на здоровье!
+        sound: ENTITY_PLAYER_LEVELUP 1.0 1.0
+        particle: CRIT 20 0.5 0.5 0.5
+      else
+        msg: &6{npc_name}: &fЖаль... Может, в другой раз повезет больше.
+        sound: ENTITY_VILLAGER_NO 1.0 1.0
+      endif
+      
+      # Завершаем диалог
+      actionbar: &7Диалог завершен
+    else
+      # Передумал
+      msg: &6{npc_name}: &fНичего страшного. Возвращайся, когда решишь, что нужно!
+      sound: ENTITY_VILLAGER_AMBIENT 1.0 0.8
+      
+      # Завершаем диалог
+      actionbar: &7Диалог завершен
+    endif
+    
+  elif {dialog_step} == 3
+    # История квеста
+    msg: &6{npc_name}: &fЯ расскажу тебе кое-что интересное. В горах к северу есть древние руины...
+    msg: &6{npc_name}: &fГоворят, там хранится древний чертеж легендарного меча!
+    
+    delay: 1500
+    sound: ENTITY_VILLAGER_TRADE 1.0 0.8
+    
+    msg: &6{npc_name}: &fЕсли бы у меня был этот чертеж, я мог бы создать оружие невиданной силы!
+    
+    # Предлагаем квест
+    msg: &a1. Я могу отправиться на поиски
+    msg: &a2. Звучит опасно
+    
+    random player_choice 1 2
+    set player_response {player_choice}
+    delay: 2000
+    
+    # Показываем ответ игрока
+    msg: &e{player}: &f{player_response}. ...
+    
+    if {player_response} == 1
+      # Принял квест
+      msg: &6{npc_name}: &fПрекрасно! Я буду ждать твоего возвращения с чертежом.
+      msg: &6{npc_name}: &fА когда ты вернешься, я создам для тебя это легендарное оружие!
+      
+      set quest_accepted true
+      sound: ENTITY_PLAYER_LEVELUP 1.0 1.0
+      title: &a&lЗадание получено
+      subtitle: &eПоиск древнего чертежа
+      
+      actionbar: &7Диалог завершен
+    else
+      # Отказался от квеста
+      msg: &6{npc_name}: &fПонимаю, не каждый готов рисковать жизнью ради старых легенд.
+      sound: ENTITY_VILLAGER_NO 1.0 1.0
+      
+      actionbar: &7Диалог завершен
+    endif
+    
+  elif {dialog_step} == 4
+    # Квестовый диалог
+    if {has_quest_item}
+      # Игрок нашел чертеж
+      msg: &6{npc_name}: &fНевероятно! Ты действительно нашел древний чертеж!
+      sound: ENTITY_PLAYER_LEVELUP 1.0 1.2
+      
+      msg: &6{npc_name}: &fДай-ка взглянуть... Да, это именно он! Легендарный меч будет создан!
+      
+      # Эффекты завершения квеста
+      particle: EXPLOSION_LARGE 1 0.1 0.1 0.1
+      sound: ENTITY_GENERIC_EXPLODE 0.5 1.0
+      delay: 500
+      particle: FLAME 30 0.5 0.5 0.5
+      
+      title: &6&lЗадание выполнено
+      subtitle: &eНаграда: Легендарное оружие
+      
+      actionbar: &7Диалог завершен
+    else
+      # Игрок еще ищет чертеж
+      msg: &6{npc_name}: &fА, это ты! Нашел уже тот чертеж, о котором я говорил?
+      sound: ENTITY_VILLAGER_AMBIENT 1.0 1.0
+      
+      msg: &6{npc_name}: &fЕще нет? Ну, я буду ждать. Помни - руины в горах к северу!
+      
+      actionbar: &7Диалог завершен
+    endif
+  endif
+endfunction
+
+# Запускаем первый шаг диалога
+sound: BLOCK_NOTE_BLOCK_CHIME 1.0 0.8
+call show_dialog 

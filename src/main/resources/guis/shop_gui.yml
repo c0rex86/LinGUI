@@ -1,0 +1,159 @@
+title: "Item Shop"
+rows: 6
+items:
+  # Info Panel
+  4:
+    material: GOLD_INGOT
+    name: "&6Balance: &e${balance}"
+    lore:
+      - "&7Current balance: &e${balance}"
+      - ""
+      - "&7Click items below to buy"
+      - "&7Right-click to sell"
+  
+  # Diamond Sword
+  19:
+    material: DIAMOND_SWORD
+    name: "&bDiamond Sword"
+    lore:
+      - "&7A powerful weapon"
+      - ""
+      - "&aBuy Price: &e$50"
+      - "&cSell Price: &e$25"
+      - ""
+      - "&eLeft-click to buy"
+      - "&eRight-click to sell"
+    script: |
+      # Set item metadata
+      set item_name diamond_sword
+      set item_price 50
+      
+      # Check click type (from clicked GUI item metadata)
+      if {click_type} == RIGHT
+        set action sell
+      else
+        set action buy
+      endif
+      
+      # Execute shop script
+      include: shop
+  
+  # Diamond Armor
+  20:
+    material: DIAMOND_CHESTPLATE
+    name: "&bDiamond Chestplate"
+    lore:
+      - "&7Strong protection"
+      - ""
+      - "&aBuy Price: &e$80"
+      - "&cSell Price: &e$40"
+      - ""
+      - "&eLeft-click to buy"
+      - "&eRight-click to sell"
+    script: |
+      # Set item metadata
+      set item_name diamond_chestplate
+      set item_price 80
+      
+      # Check click type
+      if {click_type} == RIGHT
+        set action sell
+      else
+        set action buy
+      endif
+      
+      # Execute shop script
+      include: shop
+  
+  # Golden Apple
+  21:
+    material: GOLDEN_APPLE
+    name: "&eGolden Apple"
+    lore:
+      - "&7Restores health"
+      - ""
+      - "&aBuy Price: &e$25"
+      - "&cSell Price: &e$12"
+      - ""
+      - "&eLeft-click to buy"
+      - "&eRight-click to sell"
+    script: |
+      # Set item metadata
+      set item_name golden_apple
+      set item_price 25
+      
+      # Check click type
+      if {click_type} == RIGHT
+        set action sell
+      else
+        set action buy
+      endif
+      
+      # Execute shop script
+      include: shop
+  
+  # Elytra
+  22:
+    material: ELYTRA
+    name: "&dElytra"
+    lore:
+      - "&7Fly through the air"
+      - ""
+      - "&aBuy Price: &e$200"
+      - "&cSell Price: &e$100"
+      - ""
+      - "&eLeft-click to buy"
+      - "&eRight-click to sell"
+    script: |
+      # Set item metadata
+      set item_name elytra
+      set item_price 200
+      
+      # Check click type
+      if {click_type} == RIGHT
+        set action sell
+      else
+        set action buy
+      endif
+      
+      # Execute shop script
+      include: shop
+  
+  # Add Money (Debug/Admin)
+  40:
+    material: EMERALD_BLOCK
+    name: "&a+$100 (Admin Only)"
+    lore:
+      - "&7Add $100 to your balance"
+      - "&7(Admin only)"
+    script: |
+      if perm: lingui.admin
+        math balance + 100
+        msg: &aAdded $100 to your balance!
+        msg: &aNew balance: &e${balance}
+      else
+        msg: &cYou don't have permission to use this!
+      endif
+  
+  # Reset Balance (Debug/Admin)
+  41:
+    material: REDSTONE_BLOCK
+    name: "&cReset Balance (Admin Only)"
+    lore:
+      - "&7Reset your balance to $100"
+      - "&7(Admin only)"
+    script: |
+      if perm: lingui.admin
+        set balance 100
+        msg: &aBalance reset to $100
+      else
+        msg: &cYou don't have permission to use this!
+      endif
+  
+  # Back Button
+  49:
+    material: ARROW
+    name: "&6Back to Main Menu"
+    lore:
+      - "&7Return to the main menu"
+    script: "open: advanced_menu" 

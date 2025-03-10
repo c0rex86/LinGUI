@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    // id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'ru.c0rex86'
+version = '1.0-SNAPSHOT'
+description = 'Advanced GUI library for Minecraft plugins'
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+    implementation 'org.bstats:bstats-bukkit:3.0.2'
+    implementation 'org.jetbrains:annotations:24.0.1'
+    implementation 'org.yaml:snakeyaml:2.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+processResources {
+    def props = [
+            'version': version,
+            'description': project.description,
+            'apiVersion': '1.21'
+    ]
+    inputs.properties props
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+/* 
+shadowJar {
+    archiveBaseName.set(project.name)
+    archiveClassifier.set('')
+    archiveVersion.set(project.version.toString())
+    
+    relocate 'org.bstats', 'ru.c0rex86.lingui.lib.bstats'
+}
+
+build {
+    dependsOn shadowJar
+}
+*/
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+} 

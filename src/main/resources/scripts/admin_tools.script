@@ -1,0 +1,30 @@
+# LinGUi Admin Tools Script
+# This script demonstrates various admin functionality
+# Author: c0re
+
+# First check if the player has admin permission
+if perm: lingui.admin
+  # Welcome message
+  msg: &6Welcome to the Admin Tools, &e{player}!
+  
+  # Set variables
+  set admin_name {player}
+  set is_admin true
+  
+  # Execute player command
+  cmd: say I'm using admin tools!
+  
+  # Check for specific permission for console commands
+  if perm: lingui.console
+    # Execute console command
+    console: give {player} diamond 5
+    msg: &aYou received 5 diamonds!
+  else
+    msg: &cYou don't have permission to execute console commands.
+  endif
+else
+  # If not admin, send message and close
+  msg: &cYou don't have permission to use admin tools!
+  delay 2000
+  close
+endif 

@@ -1,0 +1,93 @@
+title: "Advanced Menu"
+rows: 5
+items:
+  # Admin Tools Button
+  11:
+    material: COMMAND_BLOCK
+    name: "&6Admin Tools"
+    lore:
+      - "&7Access administrative tools"
+      - "&7and commands"
+      - ""
+      - "&eClick to access"
+    script: "include: admin_tools"
+  
+  # Shop Button
+  13:
+    material: EMERALD
+    name: "&aShop"
+    lore:
+      - "&7Buy and sell items"
+      - "&7with in-game currency"
+      - ""
+      - "&eClick to open shop"
+    script: |
+      set action none
+      open: shop_gui
+  
+  # Minigame Button
+  15:
+    material: DIAMOND
+    name: "&bNumber Guessing Game"
+    lore:
+      - "&7Try to guess the"
+      - "&7secret number!"
+      - ""
+      - "&eClick to play"
+    script: |
+      set action none
+      set game_started false
+      include: game
+  
+  # Player Info Button
+  29:
+    material: PLAYER_HEAD
+    name: "&ePlayer Info: &f{player}"
+    lore:
+      - "&7Click to view your"
+      - "&7player information"
+    script: |
+      msg: &6=== Player Info ===
+      msg: &eUsername: &f{player}
+      msg: &eUUID: &f{uuid}
+      msg: &eWorld: &f{world}
+      
+      # Show permissions
+      if perm: lingui.admin
+        msg: &eRole: &cAdmin
+      else
+        if perm: lingui.use
+          msg: &eRole: &aUser
+        else
+          msg: &eRole: &7Guest
+        endif
+      endif
+  
+  # Settings Button
+  31:
+    material: REDSTONE_TORCH
+    name: "&cSettings"
+    lore:
+      - "&7Customize your"
+      - "&7personal settings"
+    script: |
+      # Toggle notification setting
+      if {notifications} == true
+        set notifications false
+        msg: &cNotifications disabled
+      else
+        set notifications true
+        msg: &aNotifications enabled
+      endif
+      
+      # Save settings
+      msg: &eSetting saved!
+  
+  # Exit Button
+  40:
+    material: BARRIER
+    name: "&cExit Menu"
+    lore:
+      - "&7Click to close"
+      - "&7this menu"
+    script: "close" 

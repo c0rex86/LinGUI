@@ -1,0 +1,43 @@
+# LinGUi Configuration
+
+# Debug mode (enables additional logging)
+debug: false
+
+# How long to keep player data after they leave (in seconds)
+player-data-expiry: 300
+
+# Whether to save GUIs to config files when they are modified
+auto-save-guis: true
+
+# Whether to use bStats for metrics
+enable-metrics: true
+
+# Script settings
+script:
+  # Maximum script execution time in milliseconds (0 for no limit)
+  timeout: 1000
+  # Maximum number of commands a script can execute in one run
+  max-commands: 10
+  # Whether to allow console commands in scripts
+  allow-console-commands: true
+  
+# Message format settings
+messages:
+  prefix: "&6[LinGUi]&r "
+  error-prefix: "&c[LinGUi]&r "
+  
+# GUI settings
+gui:
+  # Default number of rows for new GUIs
+  default-rows: 3
+  # Whether to close GUIs when players move to a different world
+  close-on-world-change: false
+  # Whether to automatically update dynamic items
+  auto-update: true
+  # Update interval in ticks for dynamic items
+  update-interval: 20
+  
+# Command Binding settings
+commands:
+  # Create default command bindings on first run
+  create-defaults: true 
