@@ -1,8 +1,8 @@
 name: LinGUi
-version: ${version}
+version: 1.9
 main: ru.c0rex86.lingui.LinGUi
-description: ${description}
-api-version: ${apiVersion}
+description: idk :/
+api-version: 1.21
 author: c0re
 website: https://c0rex86.ru
 github: https://github.com/c0rex86/
